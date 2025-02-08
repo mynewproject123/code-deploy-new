@@ -399,7 +399,24 @@ Resources:
               #!/bin/bash
 
               yum  install -y java-1.8.0-openjdk-devel wget
-              java -version
+              java -version             
+              # Install CodeDeploy Agent
+              yum install -y ruby
+              wget https://aws-codedeploy-${AWS::Region}.s3.${AWS::Region}.amazonaws.com/latest/install
+              chmod +x ./install
+              ./install auto
+              systemctl enable codedeploy-agent
+              systemctl start codedeploy-agent
+              systemctl status codedeploy-agent
+
+              # Verify CodeDeploy installation
+              if systemctl is-active --quiet codedeploy-agent; then
+                echo "CodeDeploy agent installed and running successfully"
+              else
+                echo "CodeDeploy agent installation failed" >&2
+                exit 1
+              fi
+              
               cd /usr/local
               wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.zip
               wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.43/bin/apache-tomcat-9.0.43.zip.asc
