@@ -34,6 +34,9 @@ jobs:
       - name: chmod
         run: chmod -R +x ./.github
 
+      - name: Debug Directory Structure
+        run: ls -R $GITHUB_WORKSPACE
+
       - name: Build and Package Maven
         id: package
         working-directory: ${{ env.applicationfolder }}
